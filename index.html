@@ -83,17 +83,105 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-        select {
-            padding: 8px;
+        .multi-select {
+            position: relative;
+            min-width: 300px;
+        }
+        .select-box {
+            padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 14px;
             background-color: white;
-            width: 120px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
         }
-        select:focus {
-            outline: none;
+        .select-box:hover {
             border-color: #275284;
+        }
+        .selected-options {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: calc(100% - 20px);
+            color: #333;
+        }
+        .selected-options.placeholder {
+            color: #999;
+        }
+        .arrow {
+            color: #666;
+            transition: transform 0.3s ease;
+        }
+        .dropdown-list.show + .arrow {
+            transform: rotate(180deg);
+        }
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 8px 0;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            opacity: 1;
+        }
+        .checkbox-item:hover {
+            background-color: #f5f5f5;
+        }
+        .checkbox-item.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .checkbox-item.selected {
+            opacity: 1;
+            font-weight: 500;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .checkbox-item span {
+            color: #333;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+        .dropdown-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .dropdown-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        .dropdown-list::-webkit-scrollbar-thumb {
+            background: #275284;
+            border-radius: 3px;
+        }
+        .dropdown-list::-webkit-scrollbar-thumb:hover {
+            background: #1a3b5f;
+        }
+        .checkbox-item.select-all {
+            border-bottom: 1px solid #eee;
+            margin-bottom: 4px;
+            padding-bottom: 8px;
+            font-weight: 500;
         }
         table {
             width: 100%;
@@ -133,7 +221,6 @@
             border-radius: 5px;
             z-index: 1000;
         }
-        
         .notification {
             display: none;
             position: fixed;
@@ -143,155 +230,44 @@
             border-radius: 4px;
             z-index: 1000;
         }
-        
         .success {
             background-color: #275284;
             color: white;
         }
-        
         .error {
             background-color: #f44336;
             color: white;
         }
-        
-        .filter-container {
-            margin: 20px 0;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        
         .sort-header {
             cursor: pointer;
+            position: relative;
+            padding-right: 25px;
         }
-        
-        .sort-header:hover {
-            background-color: #45a049;
-        }
-        
         .sort-header::after {
-            content: '↕';
-            margin-left: 5px;
+            content: '';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
         }
-        
+        .sort-header.sort-asc::after {
+            content: '▲';
+            font-size: 12px;
+        }
+        .sort-header.sort-desc::after {
+            content: '▼';
+            font-size: 12px;
+        }
         .refresh-button {
             background-color: #275284;
             margin-left: 10px;
         }
-        
         .refresh-button:hover {
             background-color: #1a3b5f;
-        }
-
-        /* Responsive Design */
-        @media screen and (max-width: 768px) {
-            .container {
-                width: 100%;
-                padding: 10px;
-            }
-            
-            .search-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-box {
-                max-width: 100%;
-            }
-            
-            input[type="text"] {
-                width: 100%;
-            }
-            
-            .filter-container {
-                justify-content: space-between;
-                margin-top: 10px;
-            }
-            
-            select {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            button {
-                width: 100%;
-                justify-content: center;
-                margin: 5px 0;
-            }
-            
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-            
-            th, td {
-                min-width: 100px;
-                max-width: 200px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-
-        /* Tablet & iPad */
-        @media screen and (min-width: 769px) and (max-width: 1024px) {
-            .container {
-                width: 95%;
-            }
-            
-            .search-container {
-                flex-wrap: wrap;
-            }
-            
-            .search-box {
-                flex: 0 0 100%;
-                max-width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            input[type="text"] {
-                width: 250px;
-            }
-            
-            .filter-container {
-                flex: 1;
-                justify-content: flex-start;
-            }
-            
-            table {
-                overflow-x: auto;
-                display: block;
-            }
-        }
-
-        /* Large screens */
-        @media screen and (min-width: 1025px) {
-            .container {
-                width: 95%;
-                max-width: 1600px;
-            }
-        }
-
-        /* Footer styles */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 30px;
-            border-top: 1px solid #ddd;
-            color: #666;
-            font-size: 14px;
-            font-weight: 300;
-        }
-        
-        .footer a {
-            color: #275284;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
         }
 
         /* Header styles */
@@ -309,20 +285,16 @@
             z-index: 1000;
             box-sizing: border-box;
         }
-
         .logo {
             height: 40px;
             width: auto;
         }
-
-        /* Navigation styles */
         .nav {
             margin-left: 30px;
             display: flex;
             gap: 20px;
             align-items: center;
         }
-
         .nav-item {
             position: relative;
             padding: 10px 15px;
@@ -333,16 +305,13 @@
             border-radius: 4px;
             transition: all 0.3s ease;
         }
-
         .nav-item:hover {
             background-color: #f5f5f5;
         }
-
         .dropdown {
             position: relative;
             display: inline-block;
         }
-
         .dropdown-content {
             display: none;
             position: absolute;
@@ -351,21 +320,13 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
             z-index: 1;
             border-radius: 4px;
-            top: 100%;
+            top: calc(100% + 5px);
             left: 0;
             border-top: 3px solid #275284;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            padding-top: 5px;
         }
-
         .dropdown:hover .dropdown-content {
             display: block;
-            opacity: 1;
-            visibility: visible;
         }
-
         .dropdown-content a {
             color: #333;
             padding: 10px 15px;
@@ -374,22 +335,35 @@
             border-bottom: 1px solid #eee;
             line-height: 1.5;
         }
-
         .dropdown-content a:last-child {
             border-bottom: none;
         }
-
         .dropdown-content a:hover {
             background-color: #275284;
             color: white;
         }
-
-        /* Adjust container margin for fixed header */
         .container {
             margin-top: 90px;
         }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 14px;
+            font-weight: 300;
+        }
+        .footer a {
+            color: #275284;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
 
-        /* Responsive header */
+        /* Responsive Design */
         @media screen and (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -397,7 +371,6 @@
                 height: auto;
                 position: relative;
             }
-
             .nav {
                 margin-left: 0;
                 margin-top: 10px;
@@ -405,225 +378,321 @@
                 width: 100%;
                 height: auto;
             }
-
             .nav-item {
                 width: 100%;
                 padding: 15px;
                 border-bottom: 1px solid #eee;
             }
-
             .dropdown-content {
                 position: static;
                 box-shadow: none;
                 margin-left: 20px;
                 border-top: none;
             }
-
             .container {
                 margin-top: 20px;
+                width: 100%;
+                padding: 10px;
+            }
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-box {
+                max-width: 100%;
+            }
+            input[type="text"] {
+                width: 100%;
+            }
+            .filter-container {
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+            button {
+                width: 100%;
+                justify-content: center;
+                margin: 5px 0;
+            }
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            th, td {
+                min-width: 100px;
+                max-width: 200px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
 
-        label {
-            font-weight: 500;
+        /* Tablet & iPad */
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                width: 95%;
+            }
+            .search-container {
+                flex-wrap: wrap;
+            }
+            .search-box {
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+            input[type="text"] {
+                width: 250px;
+            }
+            .filter-container {
+                flex: 1;
+                justify-content: flex-start;
+            }
+            table {
+                overflow-x: auto;
+                display: block;
+            }
         }
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+        /* Large screens */
+        @media screen and (min-width: 1025px) {
+            .container {
+                width: 95%;
+                max-width: 1600px;
+            }
         }
 
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
-            width: 300px;
-            text-align: center;
-        }
-
-        .modal input {
-            width: 100%;
-            padding: 10px;
-            margin: 15px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .modal-buttons button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .modal-buttons .cancel-btn {
-            background-color: #6c757d;
-        }
-
-        /* Thêm vùng đệm ẩn để giữ menu */
-        .dropdown::after {
-            content: '';
-            position: absolute;
-            height: 20px;
-            width: 100%;
-            bottom: -20px;
-            left: 0;
-        }
-
-        .dropdown-content::before {
-            content: '';
-            position: absolute;
-            height: 20px;
-            width: 100%;
-            top: -20px;
-            left: 0;
-        }
-
-        /* Thêm style cho chat popup */
-        .chat-popup {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-button {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #275284;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            border: none;
-            font-size: 24px;
-        }
-
-        .chat-button:hover {
-            transform: scale(1.1);
-            background-color: #1a3b5f;
-        }
-
-        .chat-frame {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            width: 400px;
-            height: 600px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            display: none;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .chat-frame.show {
+        /* Thêm vào phần CSS, sau .dropdown-list */
+        .dropdown-list.show {
             display: block;
         }
 
-        .chat-frame.fullscreen {
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 0;
-            z-index: 2000;
-        }
-
-        .chat-frame iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .chat-controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        /* Style cho filter vị trí */
+        .header-with-filter {
             display: flex;
-            gap: 10px;
-            z-index: 2001;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 5px;
         }
 
-        .fullscreen-button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        .filter-icon {
+            cursor: pointer;
+            color: white;
+            margin-left: 8px;
+            font-size: 14px;
+        }
+
+        .location-filter {
+            position: fixed;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1001;
+            min-width: 200px;
+            max-height: 300px;
+            min-width: 200px;
+            max-height: 300px;
+        }
+
+        .location-filter.show {
+            display: block;
+        }
+
+        /* Style cho scrollbar của location filter giống như warehouse filter */
+        .location-filter::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .location-filter::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .location-filter::-webkit-scrollbar-thumb {
+            background: #275284;
+            border-radius: 3px;
+        }
+
+        .location-filter::-webkit-scrollbar-thumb:hover {
+            background: #1a3b5f;
+        }
+
+        .filter-content {
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 8px 0;
+            background-color: white;
+        }
+
+        .filter-actions {
+            padding: 8px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+        }
+
+        .apply-button {
+            padding: 4px 12px;
+            font-size: 12px;
             background-color: #275284;
             color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .apply-button:hover {
+            background-color: #1a3b5f;
+        }
+
+        /* Thêm scrollbar styles cho filter-content */
+        .filter-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .filter-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .filter-content::-webkit-scrollbar-thumb {
+            background: #275284;
+            border-radius: 3px;
+        }
+        
+        .filter-content::-webkit-scrollbar-thumb:hover {
+            background: #1a3b5f;
+        }
+
+        /* Thêm style mới để định vị dropdown */
+        .header-with-filter {
+            position: relative;
+        }
+
+        .location-filter.show {
+            display: block;
+        }
+
+        .package-info {
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-            font-size: 14px;
-            opacity: 0.8;
-            transition: all 0.3s ease;
+            gap: 10px;
+            padding: 8px 15px;
+            background: #fff;
+            border-radius: 4px;
+            min-width: 200px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .fullscreen-button:hover {
-            opacity: 1;
-            transform: scale(1.1);
+        .package-display {
+            flex: 1;
+            color: #333;
+            min-height: 20px;
+            max-height: none;
+            padding: 4px 0;
+            overflow: visible;
         }
 
-        .close-button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #dc3545;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: none;
-            font-size: 14px;
-            opacity: 0.8;
-            transition: all 0.3s ease;
+        .package-display::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .close-button:hover {
-            opacity: 1;
-            transform: scale(1.1);
+        .package-display::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
         }
 
-        @media screen and (max-width: 768px) {
-            .chat-frame {
-                width: 100%;
-                height: 100%;
-                bottom: 0;
-                right: 0;
-                border-radius: 0;
-            }
+        .package-display::-webkit-scrollbar-thumb {
+            background: #275284;
+            border-radius: 3px;
+        }
+
+        .package-info label {
+            color: #666;
+            font-weight: 500;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+
+        .package-result {
+            display: inline-block;
+            margin: 0 8px 8px 0;
+            padding: 6px 12px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .high-match {
+            border-left-color: #28a745;
+            background: #f8fff8;
+        }
+
+        .medium-match {
+            border-left-color: #ffc107;
+            background: #fffff8;
+        }
+
+        .low-match {
+            border-left-color: #dc3545;
+            background: #fff8f8;
+        }
+
+        .product-name {
+            display: inline;
+            font-weight: 500;
+            color: #275284;
+        }
+
+        .package-value {
+            display: inline;
+            color: #666;
+            margin-left: 4px;
+        }
+
+        .package-value::before {
+            content: "•";
+            margin: 0 4px;
+            color: #999;
+        }
+
+        .match-score {
+            color: #999;
+            font-size: 0.8em;
+        }
+
+        .no-results, .too-many-results {
+            padding: 10px;
+            text-align: center;
+            color: #666;
+        }
+
+        .no-results small, .too-many-results small {
+            color: #999;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .no-results {
+            color: #666;
+            font-style: italic;
+            padding: 4px 0;
+        }
+
+        .no-results small {
+            color: #999;
+            display: block;
+            margin-top: 2px;
         }
     </style>
 </head>
@@ -641,13 +710,12 @@
             <div class="dropdown">
                 <a href="#" class="nav-item">Tồn kho</a>
                 <div class="dropdown-content">
-		            <a href="#">Tồn kho HN</a>
                     <a href="https://ymedgroup.github.io/tonkhosale/">Tồn kho HCM</a>
-		            <a href="https://ymedgroup.github.io/tonkhodaily/">Tồn kho Đại lý</a>
+                    <a href="https://ymedgroup.github.io/warehousehn/">Tồn kho HN</a>
                     <a href="#" onclick="checkPassword(); return false;">Tồn kho toàn quốc</a>
                 </div>
             </div>
-            <div class="dropdown">
+			<div class="dropdown">
                 <a href="https://ymedgroup.github.io/chatroom/" class="nav-item">Tán gẫu</a>
             </div>
         </nav>
@@ -666,11 +734,30 @@
                     Tìm kiếm
                 </button>
             </div>
+            <div class="package-info">
+                <label>Quy cách:</label>
+                <div id="packageSize" class="package-display">-</div>
+            </div>
             <div class="filter-container">
                 <label for="warehouseFilter">Kho:</label>
-                <select id="warehouseFilter">
-                    <option value="">Tất cả</option>
-                </select>
+                <div class="multi-select">
+                    <div class="select-box" onclick="toggleDropdown()">
+                        <div class="selected-options" id="selectedOptions">Chọn kho hàng</div>
+                        <div class="arrow">▼</div>
+                    </div>
+                    <div class="dropdown-list" id="warehouseList">
+                        <label class="checkbox-item">
+                            <input type="checkbox" value="all" onclick="toggleAllWarehouses(this)">
+                            <span>Chọn tất cả</span>
+                        </label>
+                        <div class="warehouse-options" id="warehouseOptions">
+                            <!-- Các tùy chọn kho sẽ được thêm vào đây động -->
+                        </div>
+                        <div class="filter-actions">
+                            <button onclick="applyFilters()" class="apply-button">Áp dụng</button>
+                        </div>
+                    </div>
+                </div>
                 <button class="refresh-button" onclick="refreshData()">
                     <i class="fas fa-sync-alt"></i>
                     Làm mới
@@ -682,14 +769,33 @@
             <table id="resultsTable">
                 <thead>
                     <tr>
-                        <th class="sort-header" onclick="sortData('Mã hàng')">Mã sản phẩm</th>
-                        <th class="sort-header" onclick="sortData('Vị trí')">Vị trí</th>
-                        <th class="sort-header" onclick="sortData('Số lô')">Số lô</th>
-                        <th class="sort-header" onclick="sortData('Hạn sử dụng')">Ngày hết hạn</th>
-                        <th class="sort-header" onclick="sortData('Tồn')">Tồn kho</th>
-                        <th class="sort-header" onclick="sortData('Thùng')">Số thùng</th>
-                        <th class="sort-header" onclick="sortData('Lẻ')">Số lẻ thùng</th>
-                        <th class="sort-header" onclick="sortData('Tên kho')">Tên kho</th>
+                        <th class="sort-header" data-column="Mã hàng">Mã sản phẩm</th>
+                        <th class="sort-header" data-column="Vị trí">
+                            <div class="header-with-filter">
+                                <span>Vị trí</span>
+                                <i class="fas fa-filter filter-icon" onclick="toggleLocationFilter(event)"></i>
+                            </div>
+                            <div class="location-filter" id="locationFilter">
+                                <div class="filter-content">
+                                    <label class="checkbox-item select-all">
+                                        <input type="checkbox" value="all" onclick="toggleAllLocations(this)">
+                                        <span>Chọn tất cả</span>
+                                    </label>
+                                    <div id="locationOptions">
+                                        <!-- Các option sẽ được thêm động -->
+                                    </div>
+                                </div>
+                                <div class="filter-actions">
+                                    <button onclick="applyFilters()" class="apply-button">Áp dụng</button>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="sort-header" data-column="Số lô">Số lô</th>
+                        <th class="sort-header" data-column="Hạn sử dụng">Ngày hết hạn</th>
+                        <th class="sort-header" data-column="Tồn">Tồn kho</th>
+                        <th class="sort-header" data-column="Thùng">Số thùng</th>
+                        <th class="sort-header" data-column="Lẻ">Số lẻ thùng</th>
+                        <th class="sort-header" data-column="Tên kho">Tên kho</th>
                     </tr>
                 </thead>
                 <tbody id="resultsBody"></tbody>
@@ -702,38 +808,13 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="passwordModal">
-        <div class="modal">
-            <h3>Xác thực truy cập</h3>
-            <input type="password" id="passwordInput" placeholder="Nhập mật khẩu...">
-            <div class="modal-buttons">
-                <button onclick="verifyPassword()">Xác nhận</button>
-                <button class="cancel-btn" onclick="closePasswordModal()">Hủy</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Thêm chat popup -->
-    <div class="chat-popup">
-        <div class="chat-frame" id="chatFrame">
-            <div class="chat-controls">
-                <button class="fullscreen-button" id="fullscreenButton">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <button class="close-button" id="closeButton">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <iframe src="https://ymedgroup.github.io/chatroom/"></iframe>
-        </div>
-        <button class="chat-button" id="chatButton">
-            <i class="fas fa-comments"></i>
-        </button>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2"></script>
 
     <script>
         let globalData = [];
-        let currentSort = { column: '', direction: 'asc' };
+        let currentSort = { column: '', direction: '' };
+        let selectedWarehouses = new Set();
+        let selectedLocations = new Set();
         
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
@@ -752,10 +833,22 @@
         
         function updateWarehouseFilter(data) {
             const warehouses = [...new Set(data.map(item => item['Tên kho']).filter(Boolean))];
-            const select = document.getElementById('warehouseFilter');
-            select.innerHTML = '<option value="">Tất cả</option>';
+            const warehouseOptions = document.getElementById('warehouseOptions');
+            warehouseOptions.innerHTML = '';
+            
             warehouses.forEach(warehouse => {
-                select.innerHTML += `<option value="${warehouse}">${warehouse}</option>`;
+                const label = document.createElement('label');
+                label.className = 'checkbox-item';
+                const isSelected = selectedWarehouses.has(warehouse);
+                label.style.opacity = isSelected ? '1' : '0.6';
+                label.style.fontWeight = isSelected ? '500' : 'normal';
+                label.innerHTML = `
+                    <input type="checkbox" value="${warehouse}" 
+                           ${isSelected ? 'checked' : ''} 
+                           onclick="toggleWarehouse(this)">
+                    <span>${warehouse}</span>
+                `;
+                warehouseOptions.appendChild(label);
             });
         }
         
@@ -764,8 +857,23 @@
             try {
                 const data = await loadCSVData();
                 globalData = data;
+                
+                // Reset search input và các filter
+                document.getElementById('searchInput').value = '';
+                selectedWarehouses.clear();
+                selectedLocations.clear();
+                this.previousSearchTerm = '';
+                
+                // Reset các checkbox
+                document.querySelectorAll('#warehouseOptions input[type="checkbox"], #locationOptions input[type="checkbox"]')
+                    .forEach(cb => cb.checked = false);
+                
+                // Cập nhật filters và hiển thị
                 updateWarehouseFilter(data);
+                updateLocationFilter(data);
                 displayResults(data);
+                updateSelectedOptionsDisplay();
+                
                 showNotification('Dữ liệu đã được cập nhật');
             } catch (error) {
                 showNotification('Không thể tải dữ liệu. Vui lòng thử lại sau.', 'error');
@@ -776,28 +884,34 @@
 
         function parseCSV(csv) {
             const lines = csv.split(/\r?\n/);
-            const headers = lines[0].split(',');
+            const headers = lines[0].split(',').map(header => 
+                header.replace(/^"|"$/g, '').trim()
+            );
+            
             const results = [];
-
             for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue; // Bỏ qua dòng trống
+                
                 let currentLine = lines[i].split(',');
-                if (currentLine && currentLine.length === headers.length) {
+                if (currentLine.length === headers.length) {
                     const row = {};
                     for (let j = 0; j < headers.length; j++) {
-                        let header = headers[j].replace(/^"|"$/g, '').trim();
                         let value = currentLine[j] ? currentLine[j].replace(/^"|"$/g, '').trim() : '';
-                        row[header] = value;
+                        row[headers[j]] = value;
                     }
                     results.push(row);
                 }
             }
+            
+            // Log để debug
+            console.log('Parsed CSV:', results);
             return results;
         }
 
         async function loadCSVData() {
             showLoading(true);
             try {
-                const response = await fetch('https://docs.google.com/spreadsheets/d/1us5p2OAOvJ5UEbUoyZbd97WPF-v3RmRvKBSn4alExmk/gviz/tq?tqx=out:csv&sheet=Warehouse');
+                const response = await fetch('https://docs.google.com/spreadsheets/d/1-TwKcXRHdv7RtMkcIXNtIKusrz3p6AygPJeUwbamckA/gviz/tq?tqx=out:csv&sheet=Warehouse');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -816,34 +930,57 @@
             }
         }
 
-        async function searchProducts() {
-            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
-            const selectedWarehouse = document.getElementById('warehouseFilter').value;
+        function sortData(column) {
+            const header = document.querySelector(`th[data-column="${column}"]`);
+            const headers = document.querySelectorAll('.sort-header');
             
-            const filteredData = globalData.filter(item => {
-                const matchesSearch = item['Mã hàng'] && 
-                    item['Mã hàng'].toLowerCase().includes(searchTerm);
-                const matchesWarehouse = !selectedWarehouse || 
-                    item['Tên kho'] === selectedWarehouse;
-                return matchesSearch && matchesWarehouse;
+            // Reset tất cả headers khác
+            headers.forEach(h => {
+                if (h !== header) {
+                    h.classList.remove('sort-asc', 'sort-desc');
+                }
             });
 
-            displayResults(filteredData);
-        }
-
-        function sortData(column) {
             if (currentSort.column === column) {
-                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                if (currentSort.direction === 'asc') {
+                    currentSort.direction = 'desc';
+                    header.classList.remove('sort-asc');
+                    header.classList.add('sort-desc');
+                } else if (currentSort.direction === 'desc') {
+                    currentSort.column = '';
+                    currentSort.direction = '';
+                    header.classList.remove('sort-desc');
+                    searchProducts(); // Gọi lại searchProducts để hiển thị dữ liệu không sort
+                    return;
+                }
             } else {
                 currentSort.column = column;
                 currentSort.direction = 'asc';
+                header.classList.add('sort-asc');
             }
             
-            const sortedData = [...globalData].sort((a, b) => {
+            // Lấy dữ liệu hiện tại từ bảng
+            const tbody = document.getElementById('resultsBody');
+            const currentData = Array.from(tbody.getElementsByTagName('tr')).map(row => {
+                const cells = row.getElementsByTagName('td');
+                return {
+                    'Mã hàng': cells[0].textContent,
+                    'Vị trí': cells[1].textContent,
+                    'Số lô': cells[2].textContent,
+                    'Hạn sử dụng': cells[3].textContent,
+                    'Tồn': cells[4].textContent,
+                    'Thùng': cells[5].textContent,
+                    'Lẻ': cells[6].textContent,
+                    'Tên kho': cells[7].textContent
+                };
+            });
+
+            // Sort dữ liệu
+            const sortedData = [...currentData].sort((a, b) => {
                 const aVal = a[column] || '';
                 const bVal = b[column] || '';
                 
-                if (column === 'Tồn' || column === 'Thùng' || column === 'Lẻ') {
+                if (['Tồn', 'Thùng', 'Lẻ'].includes(column)) {
                     return currentSort.direction === 'asc' ? 
                         Number(aVal) - Number(bVal) : 
                         Number(bVal) - Number(aVal);
@@ -853,14 +990,6 @@
                     aVal.localeCompare(bVal) : 
                     bVal.localeCompare(aVal);
             });
-            
-            if (column !== 'Mã hàng' && column !== 'Số lô') {
-                sortedData.sort((a, b) => {
-                    const codeCompare = (a['Mã hàng'] || '').localeCompare(b['Mã hàng'] || '');
-                    if (codeCompare !== 0) return codeCompare;
-                    return (a['Số lô'] || '').localeCompare(b['Số lô'] || '');
-                });
-            }
             
             displayResults(sortedData);
         }
@@ -905,86 +1034,483 @@
             return true;
         }
 
+        // Thêm các hằng số cho localStorage
+        const STOCK_CACHE_KEY = 'stockDataCache';
+        const STOCK_CACHE_TIMESTAMP = 'stockCacheTimestamp';
+
+        // Hàm load dữ liệu từ sheet Stock dưới dạng JSON
+        async function loadStockData() {
+            try {
+                // Kiểm tra cache trong localStorage
+                const cachedData = localStorage.getItem(STOCK_CACHE_KEY);
+                const cacheTimestamp = localStorage.getItem(STOCK_CACHE_TIMESTAMP);
+                
+                // Nếu có cache và chưa quá 1 phiên làm việc
+                if (cachedData && cacheTimestamp && 
+                    (Date.now() - Number(cacheTimestamp)) < (24 * 60 * 60 * 1000)) {
+                    return JSON.parse(cachedData);
+                }
+
+                // Nếu không có cache hoặc cache đã hết hạn, load lại từ API
+                const response = await fetch('https://docs.google.com/spreadsheets/d/1qc7mO1c3sYCux1eLkoKuJ_0ldfAE1OnxvIHWKiXc-1w/gviz/tq?tqx=out:json&sheet=Stock&range=A:B');
+                if (!response.ok) {
+                    throw new Error('Không thể tải dữ liệu Stock');
+                }
+
+                const text = await response.text();
+                // Extract JSON từ response
+                const jsonText = text.match(/google\.visualization\.Query\.setResponse\((.*)\)/)[1];
+                const data = JSON.parse(jsonText);
+
+                // Chuyển đổi dữ liệu từ format của Google Sheets
+                const stockData = data.table.rows
+                    .filter(row => row.c && row.c[0] && row.c[1] && row.c[0].v && row.c[1].v) // Kiểm tra null
+                    .map(row => ({
+                        name: String(row.c[0].v).trim(), // Biệt dược
+                        package: String(row.c[1].v).trim() // Quy cách
+                    }))
+                    .filter(item => item.name && item.package); // Chỉ lấy item có đủ thông tin
+
+                console.log('Raw data:', data.table.rows[0]); // Debug
+                console.log('Processed stock data:', stockData); // Debug
+
+                // Lưu vào localStorage
+                localStorage.setItem(STOCK_CACHE_KEY, JSON.stringify(stockData));
+                localStorage.setItem(STOCK_CACHE_TIMESTAMP, Date.now().toString());
+
+                return stockData;
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu Stock:', error);
+                console.error('Error details:', error.message); // Debug
+                showNotification('Không thể tải dữ liệu quy cách. Vui lòng thử lại sau.', 'error');
+                return [];
+            }
+        }
+
+        // Thêm hàm clear cache khi refresh
+        function clearStockCache() {
+            localStorage.removeItem(STOCK_CACHE_KEY);
+            localStorage.removeItem(STOCK_CACHE_TIMESTAMP);
+        }
+
+        // Sửa lại hàm window.onload
         window.onload = async function() {
+            // Clear cache cũ
+            clearStockCache();
+            // Load dữ liệu mới
             await refreshData();
         };
 
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Event listener cho nút tìm kiếm
+            const searchButton = document.querySelector('.search-box button');
+            searchButton.removeAttribute('onclick');
+            searchButton.addEventListener('click', function(e) {
+                e.preventDefault();
                 searchProducts();
-            }
+            });
+
+            // 2. Event listener cho phím Enter trong ô tìm kiếm
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchProducts();
+                }
+            });
+
+            // 3. Event listener cho click outside
+            document.addEventListener('click', function(event) {
+                const multiSelect = document.querySelector('.multi-select');
+                const dropdownList = document.getElementById('warehouseList');
+                const locationFilter = document.getElementById('locationFilter');
+                const filterIcon = event.target.closest('.filter-icon');
+                const locationCheckbox = event.target.closest('#locationOptions input[type="checkbox"]');
+                const locationLabel = event.target.closest('#locationOptions label');
+
+                // Chỉ đóng dropdown khi click ra ngoài, không tự động áp dụng filter
+                if (!multiSelect.contains(event.target)) {
+                    dropdownList.classList.remove('show');
+                }
+
+                // Chỉ đóng filter vị trí khi click ra ngoài thật sự
+                if (!event.target.closest('.header-with-filter') && 
+                    !filterIcon && 
+                    !locationCheckbox && 
+                    !locationLabel && 
+                    !event.target.closest('.location-filter')) {
+                    locationFilter.classList.remove('show');
+                }
+            });
         });
 
-        function checkPassword() {
-            document.getElementById('passwordModal').style.display = 'block';
-            document.getElementById('passwordInput').focus();
+        function toggleDropdown() {
+            const dropdownList = document.getElementById('warehouseList');
+            dropdownList.classList.toggle('show');
         }
 
-        function closePasswordModal() {
-            document.getElementById('passwordModal').style.display = 'none';
-            document.getElementById('passwordInput').value = '';
-        }
-
-        function verifyPassword() {
-            const password = document.getElementById('passwordInput').value;
-            if (password === "Ymedgroup") {
-                const expirationTime = new Date().getTime() + (24 * 60 * 60 * 1000);
-                localStorage.setItem('authToken', btoa(expirationTime.toString()));
-                
-                // Chuyển hướng trực tiếp đến trang đích
-                window.location.href = 'https://ymedgroup.github.io/tonkho/';
-                closePasswordModal();
+        function updateSelectedOptionsDisplay() {
+            const selectedOptions = document.getElementById('selectedOptions');
+            if (selectedWarehouses.size === 0) {
+                selectedOptions.textContent = 'Chọn kho hàng';
+                selectedOptions.classList.add('placeholder');
             } else {
-                alert("Mật khẩu không đúng!");
-                document.getElementById('passwordInput').value = '';
+                const count = selectedWarehouses.size;
+                selectedOptions.textContent = count === 1 
+                    ? Array.from(selectedWarehouses)[0]
+                    : `${count} kho được chọn`;
+                selectedOptions.classList.remove('placeholder');
             }
         }
 
-        // Thêm event listener cho phím Enter trong modal
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                verifyPassword();
-            }
-        });
+        function toggleAllWarehouses(checkbox) {
+            const checkboxes = document.querySelectorAll('#warehouseOptions input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+                if (checkbox.checked) {
+                    selectedWarehouses.add(cb.value);
+                } else {
+                    selectedWarehouses.delete(cb.value);
+                }
+            });
+            updateSelectedOptionsDisplay();
+            applyFilters();
+        }
 
-        // Thêm script cho chat popup
-        document.getElementById('chatButton').addEventListener('click', function() {
-            const chatFrame = document.getElementById('chatFrame');
-            chatFrame.classList.toggle('show');
-        });
-
-        // Xử lý nút full màn hình
-        document.getElementById('fullscreenButton').addEventListener('click', function() {
-            const chatFrame = document.getElementById('chatFrame');
-            chatFrame.classList.toggle('fullscreen');
-            const icon = this.querySelector('i');
-            if (chatFrame.classList.contains('fullscreen')) {
-                icon.classList.remove('fa-expand');
-                icon.classList.add('fa-compress');
+        function toggleWarehouse(checkbox) {
+            if (checkbox.checked) {
+                selectedWarehouses.add(checkbox.value);
             } else {
-                icon.classList.remove('fa-compress');
-                icon.classList.add('fa-expand');
+                selectedWarehouses.delete(checkbox.value);
+                document.querySelector('input[value="all"]').checked = false;
             }
-        });
-
-        // Xử lý nút đóng
-        document.getElementById('closeButton').addEventListener('click', function() {
-            const chatFrame = document.getElementById('chatFrame');
-            chatFrame.classList.remove('show');
-        });
-
-        // Click outside to close chat
-        document.addEventListener('click', function(event) {
-            const chatFrame = document.getElementById('chatFrame');
-            const chatButton = document.getElementById('chatButton');
-            const chatControls = document.querySelector('.chat-controls');
             
-            if (!chatFrame.contains(event.target) && 
-                !chatButton.contains(event.target) && 
-                !chatControls.contains(event.target) &&
-                chatFrame.classList.contains('show')) {
-                chatFrame.classList.remove('show');
+            // Cập nhật ngay opacity khi toggle
+            const label = checkbox.parentElement;
+            label.style.opacity = checkbox.checked ? '1' : '0.8';
+            label.style.fontWeight = checkbox.checked ? '500' : 'normal';
+            
+            updateSelectedOptionsDisplay();
+            
+            // Không tự động đóng dropdown và áp dụng filter
+            // applyFilters() sẽ được gọi khi click ra ngoài
+        }
+
+        function toggleLocationFilter(event) {
+            event.stopPropagation();
+            const filter = document.getElementById('locationFilter');
+            const headerRect = event.target.closest('.header-with-filter').getBoundingClientRect();
+            
+            if (!filter.classList.contains('show')) {
+                // Tính toán vị trí khi mở dropdown
+                const top = headerRect.bottom + window.scrollY;
+                const right = window.innerWidth - headerRect.right;
+                
+                filter.style.position = 'fixed';
+                filter.style.top = `${top}px`;
+                filter.style.right = `${right}px`;
             }
+            
+            filter.classList.toggle('show');
+        }
+
+        function updateLocationFilter(data) {
+            const availableLocations = [...new Set(data.map(item => item['Vị trí']))];
+            const locationFilter = document.getElementById('locationFilter');
+            
+            // Tạo lại toàn bộ nội dung của location filter
+            locationFilter.innerHTML = `
+                <div class="filter-content">
+                    <label class="checkbox-item select-all">
+                        <input type="checkbox" value="all" onclick="toggleAllLocations(this)">
+                        <span>Chọn tất cả</span>
+                    </label>
+                    <div id="locationOptions">
+                        <!-- Các option sẽ được thêm động -->
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button onclick="applyFilters()" class="apply-button">Áp dụng</button>
+                </div>
+            `;
+            
+            const locationOptions = document.getElementById('locationOptions');
+            
+            // Thêm option cho vị trí trống
+            const blankLabel = document.createElement('label');
+            blankLabel.className = 'checkbox-item';
+            const isBlankSelected = selectedLocations.has('');
+            blankLabel.style.opacity = isBlankSelected ? '1' : '0.8';
+            blankLabel.style.fontWeight = isBlankSelected ? '500' : 'normal';
+            blankLabel.innerHTML = `
+                <input type="checkbox" value="" 
+                       ${isBlankSelected ? 'checked' : ''} 
+                       onclick="toggleLocation(this)">
+                <span>(Chưa có vị trí)</span>
+            `;
+            locationOptions.appendChild(blankLabel);
+            
+            // Thêm các vị trí khác
+            availableLocations.filter(Boolean).forEach(location => {
+                const label = document.createElement('label');
+                label.className = 'checkbox-item';
+                const isSelected = selectedLocations.has(location);
+                label.style.opacity = isSelected ? '1' : '0.8';
+                label.style.fontWeight = isSelected ? '500' : 'normal';
+                label.innerHTML = `
+                    <input type="checkbox" value="${location}" 
+                           ${isSelected ? 'checked' : ''} 
+                           onclick="toggleLocation(this)">
+                    <span>${location}</span>
+                `;
+                locationOptions.appendChild(label);
+            });
+        }
+
+        function toggleAllLocations(checkbox) {
+            const checkboxes = document.querySelectorAll('#locationOptions input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = checkbox.checked;
+                const label = cb.parentElement;
+                if (checkbox.checked) {
+                    selectedLocations.add(cb.value);
+                    label.style.opacity = '1';
+                    label.style.fontWeight = '500';
+                } else {
+                    selectedLocations.delete(cb.value);
+                    label.style.opacity = '0.8';
+                    label.style.fontWeight = 'normal';
+                }
+            });
+            updateSelectedLocationsDisplay();
+        }
+
+        function toggleLocation(checkbox) {
+            if (checkbox.checked) {
+                selectedLocations.add(checkbox.value);
+            } else {
+                selectedLocations.delete(checkbox.value);
+                document.querySelector('#locationFilter input[value="all"]').checked = false;
+            }
+            
+            // Cập nhật ngay opacity khi toggle
+            const label = checkbox.parentElement;
+            label.style.opacity = checkbox.checked ? '1' : '0.8';
+            label.style.fontWeight = checkbox.checked ? '500' : 'normal';
+            
+            updateSelectedLocationsDisplay();
+            
+            // Không tự động đóng dropdown và áp dụng filter
+            // applyFilters() sẽ được gọi khi click ra ngoài
+        }
+
+        function updateSelectedLocationsDisplay() {
+            const locationHeader = document.querySelector('.header-with-filter span');
+            if (selectedLocations.size === 0) {
+                locationHeader.textContent = 'Vị trí';
+            } else {
+                const count = selectedLocations.size;
+                locationHeader.textContent = count === 1 
+                    ? `Vị trí (${Array.from(selectedLocations)[0]})` 
+                    : `Vị trí (${count} vị trí)`;
+            }
+        }
+
+        async function searchProducts() {
+            showLoading(true);
+            try {
+                const searchInput = document.getElementById('searchInput');
+                const searchTerm = sanitizeInput(searchInput.value);
+                
+                if (!searchTerm) {
+                    document.getElementById('packageSize').textContent = '-';
+                    displayResults(globalData); // Hiển thị tất cả nếu không có search term
+                    return;
+                }
+
+                // Load dữ liệu warehouse
+                const warehouseData = await loadCSVData();
+                
+                // Tìm kiếm trong warehouse
+                const searchResults = warehouseData.filter(item => 
+                    item['Mã hàng'].toLowerCase().includes(searchTerm)
+                );
+
+                // Hiển thị kết quả warehouse
+                displayResults(searchResults);
+
+                // Tìm quy cách
+                await debouncedSearch(searchTerm);
+
+            } catch (error) {
+                console.error('Lỗi khi tìm kiếm:', error);
+                showNotification('Đã có lỗi xảy ra', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Thêm hàm mới để cập nhật danh sách kho
+        function updateWarehouseOptions(searchFilteredData) {
+            const availableWarehouses = [...new Set(searchFilteredData.map(item => item['Tên kho']))];
+            const warehouseOptions = document.getElementById('warehouseOptions');
+            warehouseOptions.innerHTML = '';
+            
+            // Chỉ hiển thị các kho có chứa mặt hàng
+            availableWarehouses.forEach(warehouse => {
+                const label = document.createElement('label');
+                label.className = 'checkbox-item';
+                const isSelected = selectedWarehouses.has(warehouse);
+                
+                // Tăng opacity cho dễ nhìn hơn
+                label.style.opacity = isSelected ? '1' : '0.8';
+                label.style.fontWeight = isSelected ? '500' : 'normal';
+                
+                label.innerHTML = `
+                    <input type="checkbox" value="${warehouse}" 
+                           ${isSelected ? 'checked' : ''} 
+                           onclick="toggleWarehouse(this)">
+                    <span>${warehouse}</span>
+                `;
+                warehouseOptions.appendChild(label);
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            // Lọc dữ liệu theo search term trước
+            const searchFilteredData = globalData.filter(item => 
+                !searchTerm || (item['Mã hàng'] && item['Mã hàng'].toLowerCase().includes(searchTerm))
+            );
+
+            // Sau đó lọc theo kho và vị trí
+            const finalFilteredData = searchFilteredData.filter(item => {
+                const matchesWarehouse = selectedWarehouses.size === 0 || 
+                    selectedWarehouses.has(item['Tên kho']);
+                const matchesLocation = selectedLocations.size === 0 || 
+                    (item['Vị trí'] ? selectedLocations.has(item['Vị trí']) : selectedLocations.has(''));
+                return matchesWarehouse && matchesLocation;
+            });
+
+            // Hiển thị kết quả đã lọc
+            displayResults(finalFilteredData);
+            
+            // Đóng các dropdown
+            document.getElementById('warehouseList').classList.remove('show');
+            document.getElementById('locationFilter').classList.remove('show');
+        }
+
+        // Thêm biến global để lưu cache
+        let globalStockData = null;
+        let searchTimeout = null;
+        let isSearching = false;
+
+        // Hàm chuẩn hóa input
+        function sanitizeInput(input) {
+            return input
+                .trim() // Xóa khoảng trắng đầu cuối
+                .replace(/[\t\n\r]+/g, ' ') // Xóa tab, newline
+                .replace(/\s+/g, ' ') // Chuẩn hóa khoảng trắng
+                .toLowerCase(); // Chuyển về lowercase
+        }
+
+        // Hàm tìm quy cách từ stockData
+        function findPackageSizes(searchTerm, stockData) {
+            if (!stockData || !stockData.length) return [];
+            
+            // Chuẩn hóa searchTerm
+            searchTerm = searchTerm.toLowerCase().trim();
+            console.log('Searching for:', searchTerm);
+
+            // Tìm kiếm trực tiếp
+            const matches = stockData.filter(item => {
+                const itemName = item.name.toLowerCase().trim();
+                return itemName.includes(searchTerm);
+            });
+
+            // Loại bỏ trùng lặp bằng cách lấy kết quả cuối cùng cho mỗi tên sản phẩm
+            const uniqueMatches = matches.reduce((acc, current) => {
+                // Sử dụng tên sản phẩm làm key
+                acc[current.name] = current;
+                return acc;
+            }, {});
+
+            // Chuyển đổi object thành array và trả về
+            const results = Object.values(uniqueMatches);
+            
+            console.log('Unique matches:', results);
+            return results;
+        }
+
+        // Hàm hiển thị quy cách
+        function displayPackageInfo(packageInfos) {
+            const packageDisplay = document.getElementById('packageSize');
+            
+            if (!packageInfos || packageInfos.length === 0) {
+                packageDisplay.innerHTML = `
+                    <div class="no-results">
+                        Không tìm thấy thông tin quy cách
+                        <small>Vui lòng kiểm tra lại từ khóa</small>
+                    </div>`;
+                return;
+            }
+
+            // Hiển thị kết quả dạng pills
+            const html = packageInfos.map(info => `
+                <div class="package-result">
+                    <span class="product-name">${info.name}</span>
+                    <span class="package-value">${info.package || 'Chưa có thông tin'}</span>
+                </div>
+            `).join('');
+
+            packageDisplay.innerHTML = html;
+        }
+
+        // Hàm debounce để tránh gọi API quá nhiều
+        function debounce(func, wait) {
+            return function (...args) {
+                if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                }
+                return new Promise((resolve) => {
+                    searchTimeout = setTimeout(() => {
+                        resolve(func.apply(this, args));
+                    }, wait);
+                });
+            };
+        }
+
+        // Hàm tìm kiếm với debounce
+        const debouncedSearch = debounce(async (searchTerm) => {
+            if (isSearching) return;
+            
+            try {
+                isSearching = true;
+                showLoading(true);
+
+                // Load dữ liệu Stock nếu chưa có
+                const stockData = await loadStockData();
+                
+                // Tìm quy cách
+                const packageInfos = findPackageSizes(searchTerm, stockData);
+                
+                // Hiển thị kết quả
+                displayPackageInfo(packageInfos);
+
+            } catch (error) {
+                console.error('Lỗi khi tìm kiếm:', error);
+                document.getElementById('packageSize').textContent = 'Đã có lỗi xảy ra';
+            } finally {
+                isSearching = false;
+                showLoading(false);
+            }
+        }, 300);
+
+        // Giữ lại xử lý paste nhưng không tự search
+        document.getElementById('searchInput').addEventListener('paste', function(e) {
+            e.preventDefault();
+            const text = sanitizeInput(e.clipboardData.getData('text'));
+            this.value = text;
         });
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
