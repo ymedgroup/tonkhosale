@@ -694,6 +694,15 @@
             display: block;
             margin-top: 2px;
         }
+
+        .total-row {
+            background-color: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .total-row td {
+            border-top: 2px solid #275284;
+        }
     </style>
 </head>
 <body>
@@ -1011,6 +1020,7 @@
                 return (a['Số lô'] || '').localeCompare(b['Số lô'] || '');
             });
 
+            // Hiển thị dữ liệu
             sortedData.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
@@ -1025,6 +1035,38 @@
                 `;
                 tbody.appendChild(row);
             });
+
+            // Tính tổng với cách xử lý số liệu chính xác hơn
+            const totals = sortedData.reduce((acc, item) => {
+                // Chuyển đổi giá trị sang số bằng cách loại bỏ dấu chấm phân cách phần nghìn
+                const ton = parseInt(String(item['Tồn']).replace(/\./g, '')) || 0;
+                const thung = parseInt(String(item['Thùng']).replace(/\./g, '')) || 0;
+                const le = parseInt(String(item['Lẻ']).replace(/\./g, '')) || 0;
+
+                // Cộng dồn vào tổng
+                acc.ton = (acc.ton || 0) + ton;
+                acc.thung = (acc.thung || 0) + thung;
+                acc.le = (acc.le || 0) + le;
+
+                return acc;
+            }, { ton: 0, thung: 0, le: 0 });
+
+            // Format số với dấu chấm cho phần nghìn
+            const formatNumber = (num) => {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            };
+
+            // Thêm dòng tổng
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'total-row';
+            totalRow.innerHTML = `
+                <td colspan="4"><strong>Tổng cộng (${data.length} kết quả)</strong></td>
+                <td><strong>${formatNumber(totals.ton)}</strong></td>
+                <td><strong>${formatNumber(totals.thung)}</strong></td>
+                <td><strong>${formatNumber(totals.le)}</strong></td>
+                <td></td>
+            `;
+            tbody.appendChild(totalRow);
         }
 
         function validateData(data) {
