@@ -8,6 +8,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Cập nhật các màu chính */
+        :root {
+            --primary-color: #CC232A; /* Fire Engine Red - màu chủ đạo */
+            --secondary-color: #F5AC27; /* Bright Yellow - màu phụ */
+            --accent-color: #FFD84B; /* Gargoyle Gas - màu nhấn */
+            --light-accent: #F2888B; /* Tulip - màu nhẹ */
+            --dark-primary: #A3262A; /* Auburn - màu đậm */
+            --gold-color: #CC9902; /* Chinese Gold - màu vàng */
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
             margin: 20px;
@@ -20,12 +30,15 @@
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             border-radius: 8px;
+            border: 1px solid rgba(204, 153, 2, 0.1);
+            box-shadow: 0 0 20px rgba(245, 172, 39, 0.1);
         }
         h1 {
-            color: #275284;
+            color: var(--primary-color);
             margin-bottom: 30px;
             text-align: center;
             font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(204, 35, 42, 0.1);
         }
         .search-container {
             display: flex;
@@ -55,12 +68,12 @@
         }
         input[type="text"]:focus {
             outline: none;
-            border-color: #275284;
-            box-shadow: 0 0 5px rgba(39,82,132,0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(204, 35, 42, 0.2);
         }
         button {
             padding: 8px 15px;
-            background-color: #275284;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             cursor: pointer;
@@ -73,7 +86,7 @@
             font-weight: 500;
         }
         button:hover {
-            background-color: #1a3b5f;
+            background-color: var(--dark-primary);
             transform: translateY(-1px);
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -144,7 +157,7 @@
             opacity: 1;
         }
         .checkbox-item:hover {
-            background-color: #f5f5f5;
+            background-color: rgba(245, 172, 39, 0.1);
         }
         .checkbox-item.disabled {
             opacity: 0.3;
@@ -199,7 +212,7 @@
             font-size: 14px;
         }
         th {
-            background-color: #275284;
+            background-color: var(--primary-color);
             color: white;
             font-weight: 500;
         }
@@ -207,7 +220,7 @@
             background-color: #f2f2f2;
         }
         tr:hover {
-            background-color: #f5f5f5;
+            background-color: rgba(245, 172, 39, 0.1);
         }
         .loading-overlay {
             display: none;
@@ -226,17 +239,21 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px;
+            padding: 15px 20px;
             border-radius: 4px;
             z-index: 1000;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .success {
-            background-color: #275284;
+            background-color: var(--gold-color);
             color: white;
+            border-left: 4px solid var(--secondary-color);
         }
         .error {
             background-color: #f44336;
             color: white;
+            border-left: 4px solid #d32f2f;
         }
         .sort-header {
             cursor: pointer;
@@ -263,11 +280,11 @@
             font-size: 12px;
         }
         .refresh-button {
-            background-color: #275284;
+            background-color: var(--primary-color);
             margin-left: 10px;
         }
         .refresh-button:hover {
-            background-color: #1a3b5f;
+            background-color: var(--dark-primary);
         }
 
         /* Header styles */
@@ -275,8 +292,8 @@
             display: flex;
             align-items: center;
             padding: 10px 40px;
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(204, 35, 42, 0.2);
             position: fixed;
             width: 100%;
             height: 60px;
@@ -298,19 +315,22 @@
         .nav-item {
             position: relative;
             padding: 10px 15px;
-            color: #333;
+            color: white;
             text-decoration: none;
             font-weight: 500;
-            line-height: 40px;
+            line-height: 20px;
             border-radius: 4px;
             transition: all 0.3s ease;
+            display: block;
+            z-index: 2;
         }
         .nav-item:hover {
-            background-color: #f5f5f5;
+            background-color: var(--dark-primary);
         }
         .dropdown {
             position: relative;
             display: inline-block;
+            padding-bottom: 10px;
         }
         .dropdown-content {
             display: none;
@@ -320,27 +340,52 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.1);
             z-index: 1;
             border-radius: 4px;
-            top: calc(100% + 5px);
+            top: 100%;
             left: 0;
-            border-top: 3px solid #275284;
+            border-top: 3px solid var(--gold-color);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            padding-top: 5px;
+        }
+        .dropdown::after {
+            content: '';
+            position: absolute;
+            height: 10px;
+            width: 100%;
+            top: 100%;
+            left: 0;
         }
         .dropdown:hover .dropdown-content {
             display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+        .dropdown-content:hover {
+            display: block;
+            opacity: 1;
+            visibility: visible;
         }
         .dropdown-content a {
             color: #333;
-            padding: 10px 15px;
+            padding: 12px 20px;
             text-decoration: none;
             display: block;
             border-bottom: 1px solid #eee;
             line-height: 1.5;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .dropdown-content a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            padding-left: 25px;
+        }
+        .dropdown:not(:hover) .dropdown-content {
+            transition-delay: 0s;
         }
         .dropdown-content a:last-child {
             border-bottom: none;
-        }
-        .dropdown-content a:hover {
-            background-color: #275284;
-            color: white;
         }
         .container {
             margin-top: 90px;
@@ -355,7 +400,7 @@
             font-weight: 300;
         }
         .footer a {
-            color: #275284;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
         }
@@ -540,7 +585,7 @@
         .apply-button {
             padding: 4px 12px;
             font-size: 12px;
-            background-color: #275284;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 4px;
@@ -549,7 +594,7 @@
         }
 
         .apply-button:hover {
-            background-color: #1a3b5f;
+            background-color: var(--dark-primary);
         }
 
         /* Thêm scrollbar styles cho filter-content */
@@ -703,11 +748,256 @@
         .total-row td {
             border-top: 2px solid #275284;
         }
+
+        /* Style cho dropdown kho hàng */
+        .multi-select {
+            position: relative;
+            min-width: 300px;
+        }
+
+        .select-box {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .select-box:hover {
+            border-color: #275284;
+        }
+
+        .selected-options {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: calc(100% - 20px);
+            color: #333;
+        }
+
+        .selected-options.placeholder {
+            color: #999;
+        }
+
+        .arrow {
+            color: #666;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-list.show + .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 8px 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            opacity: 1;
+        }
+
+        .checkbox-item:hover {
+            background-color: rgba(245, 172, 39, 0.1);
+        }
+
+        .checkbox-item.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .checkbox-item.selected {
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-item span {
+            color: #333;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Style cho scrollbar của dropdown */
+        .dropdown-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-thumb {
+            background: #275284;
+            border-radius: 3px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-thumb:hover {
+            background: #1a3b5f;
+        }
+
+        .checkbox-item.select-all {
+            border-bottom: 1px solid #eee;
+            margin-bottom: 4px;
+            padding-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Hiển thị dropdown khi active */
+        .dropdown-list.show {
+            display: block;
+        }
+
+        /* Style cho nút áp dụng */
+        .filter-actions {
+            padding: 8px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+        }
+
+        .apply-button:hover {
+            background-color: var(--dark-primary);
+        }
+
+        /* Thêm style cho nút clear */
+        .clear-button {
+            padding: 4px 12px;
+            font-size: 12px;
+            background-color: #f8f9fa;
+            color: #666;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        
+        .clear-button:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* Trang trí thêm cho không khí Tết */
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--gold-color), var(--accent-color), var(--gold-color));
+        }
+
+        /* Làm nổi bật các nút chính */
+        .apply-button, button[onclick="searchProducts()"] {
+            background: linear-gradient(45deg, var(--primary-color), var(--dark-primary));
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .apply-button:hover, button[onclick="searchProducts()"]:hover {
+            background: linear-gradient(45deg, var(--dark-primary), var(--primary-color));
+            transform: translateY(-1px);
+        }
+
+        /* Thêm animation cho notification */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification {
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        /* Điều chỉnh style cho hình ảnh Tết */
+        .tet-decoration {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 200px; /* Tăng từ 120px lên 200px (≈60% larger) */
+            height: auto;
+            z-index: 9999;
+            animation: fadeInDown 1s ease-out, bounce 2s ease infinite 1s;
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Điều chỉnh animation bounce để phù hợp với kích thước mới */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px); /* Tăng độ nảy lên để phù hợp với kích thước mới */
+            }
+        }
+
+        /* Animation xuất hiện */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translate3d(0, -100%, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        .tet-decoration {
+            animation: fadeInDown 1s ease-out, bounce 2s ease infinite 1s;
+        }
     </style>
 </head>
 <body>
+    <img src="https://i.postimg.cc/tCPSfT4H/Pngtree-2025-year-of-the-snake-19133441.png" 
+         alt="Tết 2024" 
+         class="tet-decoration">
     <div class="header">
-        <img src="https://i.ibb.co/RDn390c/logo-final-01.png" alt="Logo" class="logo">
+        <img src="https://i.postimg.cc/KzrDZKw6/logo-final-02.png" alt="Logo" class="logo">
         <nav class="nav">
             <div class="dropdown">
                 <a href="#" class="nav-item">Tra cứu</a>
@@ -719,14 +1009,10 @@
             <div class="dropdown">
                 <a href="#" class="nav-item">Tồn kho</a>
                 <div class="dropdown-content">
-		    <a href="https://ymedgroup.github.io/warehousehn/">Tồn kho HN</a>
                     <a href="https://ymedgroup.github.io/tonkhosale/">Tồn kho HCM</a>
-		    <a href="https://ymedgroup.github.io/tonkhodaily/">Tồn kho Đại lý</a>
+                    <a href="https://ymedgroup.github.io/warehousehn/">Tồn kho HN</a>
                     <a href="#" onclick="checkPassword(); return false;">Tồn kho toàn quốc</a>
                 </div>
-            </div>
-			<div class="dropdown">
-                <a href="https://ymedgroup.github.io/chatroom/" class="nav-item">Tán gẫu</a>
             </div>
         </nav>
     </div>
@@ -756,14 +1042,17 @@
                         <div class="arrow">▼</div>
                     </div>
                     <div class="dropdown-list" id="warehouseList">
-                        <label class="checkbox-item">
-                            <input type="checkbox" value="all" onclick="toggleAllWarehouses(this)">
-                            <span>Chọn tất cả</span>
-                        </label>
-                        <div class="warehouse-options" id="warehouseOptions">
-                            <!-- Các tùy chọn kho sẽ được thêm vào đây động -->
+                        <div class="filter-content">
+                            <label class="checkbox-item select-all">
+                                <input type="checkbox" value="all" onclick="toggleAllWarehouses(this)">
+                                <span>Chọn tất cả</span>
+                            </label>
+                            <div id="warehouseOptions">
+                                <!-- Các option sẽ được thêm động -->
+                            </div>
                         </div>
                         <div class="filter-actions">
+                            <button onclick="clearWarehouseFilters()" class="clear-button">Xóa bộ lọc</button>
                             <button onclick="applyFilters()" class="apply-button">Áp dụng</button>
                         </div>
                     </div>
@@ -796,6 +1085,7 @@
                                     </div>
                                 </div>
                                 <div class="filter-actions">
+                                    <button onclick="clearLocationFilters()" class="clear-button">Xóa bộ lọc</button>
                                     <button onclick="applyFilters()" class="apply-button">Áp dụng</button>
                                 </div>
                             </div>
@@ -825,6 +1115,12 @@
         let currentSort = { column: '', direction: '' };
         let selectedWarehouses = new Set();
         let selectedLocations = new Set();
+        
+        // Thêm biến để lưu kết quả tìm kiếm hiện tại
+        let currentSearchResults = [];
+        
+        // Thêm biến để theo dõi trạng thái tìm kiếm
+        let isSearchActive = false;
         
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
@@ -865,14 +1161,9 @@
         async function refreshData() {
             showLoading(true);
             try {
+                clearCache(); // Xóa bộ nhớ đệm trước khi làm mới
                 const data = await loadCSVData();
                 globalData = data;
-                
-                // Reset search input và các filter
-                document.getElementById('searchInput').value = '';
-                selectedWarehouses.clear();
-                selectedLocations.clear();
-                this.previousSearchTerm = '';
                 
                 // Reset các checkbox
                 document.querySelectorAll('#warehouseOptions input[type="checkbox"], #locationOptions input[type="checkbox"]')
@@ -1209,14 +1500,18 @@
             const checkboxes = document.querySelectorAll('#warehouseOptions input[type="checkbox"]');
             checkboxes.forEach(cb => {
                 cb.checked = checkbox.checked;
+                const label = cb.parentElement;
                 if (checkbox.checked) {
                     selectedWarehouses.add(cb.value);
+                    label.style.opacity = '1';
+                    label.style.fontWeight = '500';
                 } else {
                     selectedWarehouses.delete(cb.value);
+                    label.style.opacity = '0.6';
+                    label.style.fontWeight = 'normal';
                 }
             });
             updateSelectedOptionsDisplay();
-            applyFilters();
         }
 
         function toggleWarehouse(checkbox) {
@@ -1229,7 +1524,7 @@
             
             // Cập nhật ngay opacity khi toggle
             const label = checkbox.parentElement;
-            label.style.opacity = checkbox.checked ? '1' : '0.8';
+            label.style.opacity = checkbox.checked ? '1' : '0.6';
             label.style.fontWeight = checkbox.checked ? '500' : 'normal';
             
             updateSelectedOptionsDisplay();
@@ -1257,10 +1552,17 @@
         }
 
         function updateLocationFilter(data) {
-            const availableLocations = [...new Set(data.map(item => item['Vị trí']))];
+            // Lọc ra các vị trí có chứa hàng (có số lượng tồn > 0)
+            const availableLocations = [...new Set(data
+                .filter(item => {
+                    const ton = parseInt(String(item['Tồn']).replace(/\./g, '')) || 0;
+                    return ton > 0;
+                })
+                .map(item => item['Vị trí']))];
+            
             const locationFilter = document.getElementById('locationFilter');
             
-            // Tạo lại toàn bộ nội dung của location filter
+            // Tạo lại nội dung của location filter
             locationFilter.innerHTML = `
                 <div class="filter-content">
                     <label class="checkbox-item select-all">
@@ -1272,40 +1574,54 @@
                     </div>
                 </div>
                 <div class="filter-actions">
+                    <button onclick="clearLocationFilters()" class="clear-button">Xóa bộ lọc</button>
                     <button onclick="applyFilters()" class="apply-button">Áp dụng</button>
                 </div>
             `;
             
             const locationOptions = document.getElementById('locationOptions');
             
-            // Thêm option cho vị trí trống
-            const blankLabel = document.createElement('label');
-            blankLabel.className = 'checkbox-item';
-            const isBlankSelected = selectedLocations.has('');
-            blankLabel.style.opacity = isBlankSelected ? '1' : '0.8';
-            blankLabel.style.fontWeight = isBlankSelected ? '500' : 'normal';
-            blankLabel.innerHTML = `
-                <input type="checkbox" value="" 
-                       ${isBlankSelected ? 'checked' : ''} 
-                       onclick="toggleLocation(this)">
-                <span>(Chưa có vị trí)</span>
-            `;
-            locationOptions.appendChild(blankLabel);
-            
-            // Thêm các vị trí khác
-            availableLocations.filter(Boolean).forEach(location => {
-                const label = document.createElement('label');
-                label.className = 'checkbox-item';
-                const isSelected = selectedLocations.has(location);
-                label.style.opacity = isSelected ? '1' : '0.8';
-                label.style.fontWeight = isSelected ? '500' : 'normal';
-                label.innerHTML = `
-                    <input type="checkbox" value="${location}" 
-                           ${isSelected ? 'checked' : ''} 
+            // Thêm option cho vị trí trống nếu có hàng tồn
+            if (data.some(item => {
+                const ton = parseInt(String(item['Tồn']).replace(/\./g, '')) || 0;
+                return !item['Vị trí'] && ton > 0;
+            })) {
+                const blankLabel = document.createElement('label');
+                blankLabel.className = 'checkbox-item';
+                const isBlankSelected = selectedLocations.has('');
+                blankLabel.style.opacity = isBlankSelected ? '1' : '0.6';
+                blankLabel.style.fontWeight = isBlankSelected ? '500' : 'normal';
+                blankLabel.innerHTML = `
+                    <input type="checkbox" value="" 
+                           ${isBlankSelected ? 'checked' : ''} 
                            onclick="toggleLocation(this)">
-                    <span>${location}</span>
+                    <span>(Chưa có vị trí)</span>
                 `;
-                locationOptions.appendChild(label);
+                locationOptions.appendChild(blankLabel);
+            }
+            
+            // Thêm các vị trí khác có hàng tồn
+            availableLocations.filter(Boolean).forEach(location => {
+                // Kiểm tra xem vị trí này có hàng tồn không
+                const hasStock = data.some(item => {
+                    const ton = parseInt(String(item['Tồn']).replace(/\./g, '')) || 0;
+                    return item['Vị trí'] === location && ton > 0;
+                });
+
+                if (hasStock) {
+                    const label = document.createElement('label');
+                    label.className = 'checkbox-item';
+                    const isSelected = selectedLocations.has(location);
+                    label.style.opacity = isSelected ? '1' : '0.6';
+                    label.style.fontWeight = isSelected ? '500' : 'normal';
+                    label.innerHTML = `
+                        <input type="checkbox" value="${location}" 
+                               ${isSelected ? 'checked' : ''} 
+                               onclick="toggleLocation(this)">
+                        <span>${location}</span>
+                    `;
+                    locationOptions.appendChild(label);
+                }
             });
         }
 
@@ -1320,7 +1636,7 @@
                     label.style.fontWeight = '500';
                 } else {
                     selectedLocations.delete(cb.value);
-                    label.style.opacity = '0.8';
+                    label.style.opacity = '0.6';
                     label.style.fontWeight = 'normal';
                 }
             });
@@ -1337,7 +1653,7 @@
             
             // Cập nhật ngay opacity khi toggle
             const label = checkbox.parentElement;
-            label.style.opacity = checkbox.checked ? '1' : '0.8';
+            label.style.opacity = checkbox.checked ? '1' : '0.6';
             label.style.fontWeight = checkbox.checked ? '500' : 'normal';
             
             updateSelectedLocationsDisplay();
@@ -1348,14 +1664,7 @@
 
         function updateSelectedLocationsDisplay() {
             const locationHeader = document.querySelector('.header-with-filter span');
-            if (selectedLocations.size === 0) {
-                locationHeader.textContent = 'Vị trí';
-            } else {
-                const count = selectedLocations.size;
-                locationHeader.textContent = count === 1 
-                    ? `Vị trí (${Array.from(selectedLocations)[0]})` 
-                    : `Vị trí (${count} vị trí)`;
-            }
+            locationHeader.textContent = 'Vị trí';
         }
 
         async function searchProducts() {
@@ -1366,20 +1675,27 @@
                 
                 if (!searchTerm) {
                     document.getElementById('packageSize').textContent = '-';
-                    displayResults(globalData); // Hiển thị tất cả nếu không có search term
+                    currentSearchResults = globalData;
+                    isSearchActive = false;
+                    displayResults(globalData);
+                    updateFilters(globalData);
                     return;
                 }
 
-                // Load dữ liệu warehouse
-                const warehouseData = await loadCSVData();
-                
                 // Tìm kiếm trong warehouse
-                const searchResults = warehouseData.filter(item => 
+                const searchResults = globalData.filter(item => 
                     item['Mã hàng'].toLowerCase().includes(searchTerm)
                 );
 
+                // Lưu kết quả tìm kiếm hiện tại
+                currentSearchResults = searchResults;
+                isSearchActive = true;
+
                 // Hiển thị kết quả warehouse
                 displayResults(searchResults);
+                
+                // Cập nhật bộ lọc dựa trên kết quả tìm kiếm
+                updateFilters(searchResults);
 
                 // Tìm quy cách
                 await debouncedSearch(searchTerm);
@@ -1392,55 +1708,68 @@
             }
         }
 
-        // Thêm hàm mới để cập nhật danh sách kho
-        function updateWarehouseOptions(searchFilteredData) {
-            const availableWarehouses = [...new Set(searchFilteredData.map(item => item['Tên kho']))];
+        function updateFilters(data) {
+            // Reset các lựa chọn hiện tại
+            selectedWarehouses.clear();
+            selectedLocations.clear();
+            
+            // Lấy danh sách kho và vị trí từ dữ liệu hiện tại
+            const availableWarehouses = [...new Set(data.map(item => item['Tên kho']))].filter(Boolean);
+            const availableLocations = [...new Set(data.map(item => item['Vị trí']))].filter(Boolean);
+            
+            // Cập nhật bộ lọc kho
             const warehouseOptions = document.getElementById('warehouseOptions');
             warehouseOptions.innerHTML = '';
             
-            // Chỉ hiển thị các kho có chứa mặt hàng
             availableWarehouses.forEach(warehouse => {
                 const label = document.createElement('label');
                 label.className = 'checkbox-item';
                 const isSelected = selectedWarehouses.has(warehouse);
-                
-                // Tăng opacity cho dễ nhìn hơn
-                label.style.opacity = isSelected ? '1' : '0.8';
-                label.style.fontWeight = isSelected ? '500' : 'normal';
-                
+                label.style.opacity = '0.6';
+                label.style.fontWeight = 'normal';
                 label.innerHTML = `
-                    <input type="checkbox" value="${warehouse}" 
-                           ${isSelected ? 'checked' : ''} 
-                           onclick="toggleWarehouse(this)">
+                    <input type="checkbox" value="${warehouse}" onclick="toggleWarehouse(this)">
                     <span>${warehouse}</span>
                 `;
                 warehouseOptions.appendChild(label);
             });
-        }
-
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
             
-            // Lọc dữ liệu theo search term trước
-            const searchFilteredData = globalData.filter(item => 
-                !searchTerm || (item['Mã hàng'] && item['Mã hàng'].toLowerCase().includes(searchTerm))
-            );
-
-            // Sau đó lọc theo kho và vị trí
-            const finalFilteredData = searchFilteredData.filter(item => {
-                const matchesWarehouse = selectedWarehouses.size === 0 || 
-                    selectedWarehouses.has(item['Tên kho']);
-                const matchesLocation = selectedLocations.size === 0 || 
-                    (item['Vị trí'] ? selectedLocations.has(item['Vị trí']) : selectedLocations.has(''));
-                return matchesWarehouse && matchesLocation;
+            // Cập nhật bộ lọc vị trí
+            const locationOptions = document.getElementById('locationOptions');
+            locationOptions.innerHTML = '';
+            
+            // Thêm option cho vị trí trống nếu có
+            if (data.some(item => !item['Vị trí'])) {
+                const blankLabel = document.createElement('label');
+                blankLabel.className = 'checkbox-item';
+                const isBlankSelected = selectedLocations.has('');
+                blankLabel.style.opacity = '0.6';
+                blankLabel.style.fontWeight = 'normal';
+                blankLabel.innerHTML = `
+                    <input type="checkbox" value="" onclick="toggleLocation(this)">
+                    <span>(Chưa có vị trí)</span>
+                `;
+                locationOptions.appendChild(blankLabel);
+            }
+            
+            availableLocations.forEach(location => {
+                if (location) { // Chỉ thêm các vị trí không rỗng
+                    const label = document.createElement('label');
+                    label.className = 'checkbox-item';
+                    const isSelected = selectedLocations.has(location);
+                    label.style.opacity = isSelected ? '1' : '0.6';
+                    label.style.fontWeight = isSelected ? '500' : 'normal';
+                    label.innerHTML = `
+                        <input type="checkbox" value="${location}" onclick="toggleLocation(this)">
+                        <span>${location}</span>
+                    `;
+                    locationOptions.appendChild(label);
+                }
             });
-
-            // Hiển thị kết quả đã lọc
-            displayResults(finalFilteredData);
             
-            // Đóng các dropdown
-            document.getElementById('warehouseList').classList.remove('show');
-            document.getElementById('locationFilter').classList.remove('show');
+            // Cập nhật hiển thị
+            updateSelectedOptionsDisplay();
+            updateSelectedLocationsDisplay();
         }
 
         // Thêm biến global để lưu cache
@@ -1555,6 +1884,150 @@
             const text = sanitizeInput(e.clipboardData.getData('text'));
             this.value = text;
         });
+
+        // Hàm xử lý dữ liệu trả về từ API
+        function handleSearchResponse(data) {
+            // Reset select boxes
+            $('#warehouse').val('');
+            $('#location').val('');
+            
+            // Lấy danh sách kho từ dữ liệu tìm kiếm
+            const uniqueWarehouses = [...new Set(data.map(item => item.warehouse))].filter(Boolean);
+            
+            // Cập nhật select box kho
+            const warehouseSelect = $('#warehouse');
+            warehouseSelect.empty();
+            warehouseSelect.append('<option value="">Tất cả kho</option>');
+            
+            // Chỉ thêm các kho có trong kết quả tìm kiếm
+            uniqueWarehouses.forEach(warehouse => {
+                warehouseSelect.append(`<option value="${warehouse}">${warehouse}</option>`);
+            });
+
+            // Tương tự với vị trí
+            const uniqueLocations = [...new Set(data.map(item => item.location))].filter(Boolean);
+            
+            const locationSelect = $('#location');
+            locationSelect.empty();
+            locationSelect.append('<option value="">Tất cả vị trí</option>');
+            
+            uniqueLocations.forEach(location => {
+                locationSelect.append(`<option value="${location}">${location}</option>`);
+            });
+            
+            // ... existing code ...
+        }
+
+        function applyFilters() {
+            // Bắt đầu từ kết quả tìm kiếm hiện tại
+            let filteredData = [...currentSearchResults];
+            
+            // Lọc theo kho nếu có kho được chọn
+            if (selectedWarehouses.size > 0) {
+                filteredData = filteredData.filter(item => 
+                    selectedWarehouses.has(item['Tên kho'])
+                );
+            }
+            
+            // Lọc theo vị trí nếu có vị trí được chọn
+            if (selectedLocations.size > 0) {
+                filteredData = filteredData.filter(item => {
+                    if (selectedLocations.has('') && !item['Vị trí']) {
+                        return true;
+                    }
+                    return selectedLocations.has(item['Vị trí']);
+                });
+            }
+            
+            // Hiển thị kết quả đã lọc
+            displayResults(filteredData);
+            
+            // Đóng dropdown tương ứng
+            if (selectedWarehouses.size > 0) {
+                document.getElementById('warehouseList').classList.remove('show');
+            }
+            if (selectedLocations.size > 0) {
+                document.getElementById('locationFilter').classList.remove('show');
+            }
+            
+            // Hiển thị thông báo riêng cho từng loại filter
+            let notifications = [];
+            if (selectedWarehouses.size > 0) {
+                notifications.push(`${selectedWarehouses.size} kho`);
+            }
+            if (selectedLocations.size > 0) {
+                notifications.push(`${selectedLocations.size} vị trí`);
+            }
+            
+            if (notifications.length > 0) {
+                showNotification(`Đã áp dụng bộ lọc: ${notifications.join(', ')}`);
+            }
+        }
+
+        // Tách riêng hàm xóa bộ lọc cho kho và vị trí
+        function clearWarehouseFilters() {
+            selectedWarehouses.clear();
+            
+            // Bỏ chọn tất cả các checkbox kho
+            document.querySelectorAll('#warehouseOptions input[type="checkbox"]')
+                .forEach(cb => {
+                    cb.checked = false;
+                    const label = cb.parentElement;
+                    label.style.opacity = '0.6';
+                    label.style.fontWeight = 'normal';
+                });
+            
+            // Bỏ chọn checkbox "Chọn tất cả" của kho
+            document.querySelector('#warehouseList input[value="all"]').checked = false;
+            
+            // Cập nhật hiển thị
+            updateSelectedOptionsDisplay();
+            
+            // Hiển thị tất cả dữ liệu dựa trên trạng thái tìm kiếm
+            displayResults(isSearchActive ? currentSearchResults : globalData);
+            
+            // Đóng dropdown
+            document.getElementById('warehouseList').classList.remove('show');
+            
+            showNotification('Đã xóa bộ lọc kho');
+        }
+
+        function clearLocationFilters() {
+            selectedLocations.clear();
+            
+            // Bỏ chọn tất cả các checkbox vị trí
+            document.querySelectorAll('#locationOptions input[type="checkbox"]')
+                .forEach(cb => {
+                    cb.checked = false;
+                    const label = cb.parentElement;
+                    label.style.opacity = '0.6';
+                    label.style.fontWeight = 'normal';
+                });
+            
+            // Bỏ chọn checkbox "Chọn tất cả" của vị trí
+            document.querySelector('#locationFilter input[value="all"]').checked = false;
+            
+            // Cập nhật hiển thị
+            updateSelectedLocationsDisplay();
+            
+            // Hiển thị tất cả dữ liệu dựa trên trạng thái tìm kiếm
+            displayResults(isSearchActive ? currentSearchResults : globalData);
+            
+            // Đóng dropdown
+            document.getElementById('locationFilter').classList.remove('show');
+            
+            showNotification('Đã xóa bộ lọc vị trí');
+        }
+
+        // Thêm hàm để xóa bộ nhớ đệm khi làm mới dữ liệu
+        function clearCache() {
+            currentSearchResults = [];
+            isSearchActive = false;
+            selectedWarehouses.clear();
+            selectedLocations.clear();
+            document.getElementById('searchInput').value = '';
+            document.getElementById('packageSize').textContent = '-';
+        }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </body>
